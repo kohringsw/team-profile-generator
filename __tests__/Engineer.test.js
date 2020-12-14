@@ -8,6 +8,7 @@ test("Set Github username", () => {
     "bobvance@vancerefrigeration.com",
     testUsername
   );
+  expect(employee.github).toBe(testUsername);
 });
 
 test("Get role from getRole()", () => {
@@ -29,4 +30,5 @@ test("Get Github username from getGithub()", () => {
     "bobvance@vancerefrigeration.com",
     testUsername
   );
+  expect(employee.getGithub()).toBe(testUsername);
 });
