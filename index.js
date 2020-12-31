@@ -3,37 +3,45 @@ const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
-const uitl = require("util");
+const util = require("util");
 const fs = require("fs");
-const render = require("./src/page-template.js");
+const html = require("./src/page-template");
 const validator = require("email-validator");
 
 // Async functions
-const asyncWriteFile = util.promisify(fs.writeFile);
-const asyncAppendFile = util.promisify(fs.appendFile);
+const appendFileAsync = util.promisify(fs.appendFile);
 
-//
-const teamMembers = [];
-const teamString = ``;
+let teamMembers = [];
+let teamString = ``;
 
+console.clear();
+console.log("----------------------------------------");
 console.log("Team Profile Generator by Shelby Kohring");
+console.log("----------------------------------------");
 
-// Function to run application
+// Main function to run application
 async function appMenu() {
   try {
     await prompt();
 
     for (let i = 0; i < teamMembers.length; i++) {
-      teamString = teamMembers + render.generateCard(teamMembers[i]);
+      teamString = teamString + html.generateCard(teamMembers[i]);
     }
 
-    let finalHTML = render.generateHTML(teamString);
+    const finalHTML = html.generateHTML(teamString);
 
+    console.clear();
+    console.log("---------------------------");
     console.log("Generating index.html file.");
+    console.log("---------------------------");
 
-    asyncWriteFile("./dist/index.html", finalHTML);
+    appendFileAsync("./dist/index.html", finalHTML);
 
+    console.clear();
+    console.log("------------------------");
     console.log("index.html file created!");
+    console.log("------------------------");
+
   } catch (err) {
     return console.log(err);
   }
@@ -78,12 +86,8 @@ async function prompt() {
           message: "Enter the employee's email address: (Required)",
           validate: (emailInput) => {
             if (emailInput) {
-              // use email-validator
-              validator.validate("test@email.com");
-              return true;
-            } else {
-              console.log("Please enter a valid email address!");
-              return false;
+              // validate with npm email-validator
+              return validator.validate(emailInput);
             }
           },
         },
@@ -99,7 +103,7 @@ async function prompt() {
       let input2 = "";
 
       if (input.role === "Engineer") {
-        input2 = await inquire.prompt([
+        input2 = await inquirer.prompt([
           {
             type: "input",
             name: "github",
@@ -123,9 +127,9 @@ async function prompt() {
           input2.github
         );
         teamMembers.push(engineeer);
-        
+
       } else if (input.role === "Manager") {
-        input2 = await inquire.prompt([
+        input2 = await inquirer.prompt([
           {
             type: "input",
             name: "officeNumber",
@@ -151,7 +155,7 @@ async function prompt() {
         teamMembers.push(manager);
 
       } else if (input.role === "Intern") {
-        input2 = await inquire.prompt([
+        input2 = await inquirer.prompt([
           {
             type: "input",
             name: "school",
@@ -182,12 +186,12 @@ async function prompt() {
     inputComplete = await inquirer.prompt([
       {
         type: "list",
-        name: "done",
+        name: "finish",
         message: "Do you want to continue adding employees?",
         choices: ["Yes", "No"],
       },
     ]);
-  } while (inputComplete.done === "Yes");
+  } while (inputComplete.finish === "Yes");
 }
 
 // initial application

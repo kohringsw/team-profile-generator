@@ -1,4 +1,4 @@
-const generateHTML = function () {
+const generateHTML = function (teamString) {
   return `<!DOCTYPE html>
   <html lang="en">
     <head>
@@ -44,14 +44,14 @@ const generateCard = function (array) {
   // display user input
   let roleInput;
 
-  if ((array.role = "Manager")) {
+  if (array.role === "Manager") {
     roleIcon = `<i class="fas fa-mug-hot"></i>`;
     roleInput = `Office Number: ${array.officeNumber}`;
   } else if (array.role === "Engineer") {
-    roleIcon = `i< class="fas fa-glasses"></i>`;
-    roleInput = `GitHub Username: ${array.github}`;
+    roleIcon = `<i class="fas fa-glasses"></i>`;
+    roleInput = `GitHub Username: <a href="https://github.com/${array.github}" target="_blank">${array.github}</a>`;
   } else if (array.role === "Intern") {
-    roleIcon = `i< class="fas fa-user-graduate"></i>`;
+    roleIcon = `<i class="fas fa-user-graduate"></i>`;
     roleInput = `School: ${array.school}`;
   }
 
@@ -59,14 +59,12 @@ const generateCard = function (array) {
   <div class="card shadow mb-5 bg-white rounded">
     <div class="card-header bg-info">
       <h4 class="text-white text-center mb-3 mt-2">${array.name}</h4>
-      <h4 class="text-white text-center">
-        <i ${roleIcon}></i> ${array.role}
-      </h4>
+      <h4 class="text-white text-center">${roleIcon}</i> ${array.role}</h4>
     </div>
     <div class="card-body">
       <ul class="list-unstyled">
         <li class="mb-3">Employee ID: ${array.id}</li>
-        <li class="mb-3">Email: ${array.email}</li>
+        <li class="mb-3">Email: <a href="mailto:${array.email}">${array.email}</a></li>
         <li class="mb-3">${roleInput}</li>
       </ul>
     </div>
