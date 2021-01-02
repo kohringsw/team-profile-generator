@@ -5,7 +5,7 @@ test("Set school", () => {
   const employee = new Intern(
     "Bob Vance",
     123,
-    "bobvance@vancerefrigeration.com"
+    "bobvance@vancerefrigeration.com",
     testSchool
   );
   expect(employee.school).toBe(testSchool);
